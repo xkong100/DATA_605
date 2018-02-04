@@ -1,0 +1,50 @@
+---
+title: "Week1_discussion"
+author: "Vivian Kong"
+date: "2/2/2018"
+output: word_document
+---
+
+```{r}
+A <- matrix(c(1,4,-3,6,3,0),2, byrow=T)
+B <- matrix(c(3,2,1,-2,-6,5),2,byrow=T)
+C <- matrix(c(2,4,4,0,-2,2),3, byrow=T)
+
+alpha <- 4
+Betta <- 1/2
+
+# 1. A+B
+a1 <- A + B
+a1
+
+# 2. A + C  No solution
+
+# 3. Bt + C
+a3 <- t(B)+C
+a3
+
+# 4. A + Bt No Solution
+
+# 5. Betta*C
+
+a5 <- Betta * C
+a5
+
+# 6. 4A- 3B
+a6 <- 4 *A - 3 *B
+a6
+
+# 7. At + alpha C
+a7 <- t(A)+ alpha * C
+a7
+
+# 8. A+B-Ct
+a8 <- A+B-t(C)
+a8
+
+# 9. 4A+2B-5Ct
+
+a9 <- 4*A+2*B-5*t(C)
+a9
+
+```
