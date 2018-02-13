@@ -1,0 +1,124 @@
+---
+title: "HW3 Assignment"
+author: "Vivian Kong"
+header-includes:
+  - \usepackage{amsmath}
+date: "2/12/2018"
+output: html_document
+---
+
+---
+# Probelm set 1
+# (1)
+```{r}
+library(matrixcalc)
+A <- matrix(c(1,2,3,4,-1,0,1,3,0,1,-2,1,5,4,-2,-3), 4, byrow=T)
+A
+matrix.rank(A)
+```
+
+# (2) If m >n, the maximum rank can be n, and the minimum rank will be 1 since we assume that the matrix is non-zero.
+
+# (3)
+```{r}
+B <- matrix(c(1,2,1,3,6,3,2,4,2), 3, byrow=T)
+B
+matrix.rank(B)
+```
+
+# Problem set 2
+
+$A=\begin{pmatrix}
+1 & 2 & 3\\
+0 & 4 & 5\\
+0 & 0 & 6\end{pmatrix}$
+
+
+$x=\begin{pmatrix}
+x & 0 & 0\\
+0 & x & 0\\
+0 & 0 & x\end{pmatrix}$
+
+
+$A-x=\begin{pmatrix}
+1-x & 2 & 3\\
+0 & 4-x & 5\\
+0 & 0 & 6-x\end{pmatrix}$
+
+$det(A-x)=(1-x)(24-10x+x^2)$
+
+$(1-x)(24-10x+x^2)=0$
+
+$(1-x)(x-4)(x-6)=0$
+
+
+$x=1,x=4,x=6$
+
+
+$a) eigenvalue=1$
+
+$B=\begin{pmatrix}
+0 & 2 & 3 &| 0\\
+0 & 3 & 5 &| 0\\
+0 & 0 & 5 &| 0\end{pmatrix}\\
+reduced\ rechelon \ form \ B= \begin{pmatrix}
+0 & 1 & 0 &| 0\\
+0 & 0 & 1 &| 0\\
+0 & 0 & 0 &| 0\end{pmatrix}$
+
+$x_2=0, x_3=0, x_1=1$
+
+$\begin{pmatrix}
+1 & 2 & 3\\
+0 & 4 & 5\\
+0 & 0 & 6\end{pmatrix} *
+\begin{pmatrix}
+1 \\0\\ 0\end{pmatrix}= \begin{pmatrix}
+1 \\0\\ 0\end{pmatrix}$
+
+$b) eigenvalue=4$
+
+$C=\begin{pmatrix}
+-3 & 2 & 3 &| 0\\
+0 & 0 & 5 &| 0\\
+0 & 0 & 2 &| 0\end{pmatrix}\\
+reduced\ rechelon \ form \ C= \begin{pmatrix}
+1 & -2/3 & 0 &| 0\\
+0 & 0 & 1 &| 0\\
+0 & 0 & 0 &| 0\end{pmatrix}$
+
+$x_1=2, x_2=3, x_3=0$
+
+$\begin{pmatrix}
+1 & 2 & 3\\
+0 & 4 & 5\\
+0 & 0 & 6\end{pmatrix} *
+\begin{pmatrix}
+2 \\3\\ 0\end{pmatrix}= \begin{pmatrix}
+8 \\12\\ 0\end{pmatrix}=4*
+\begin{pmatrix}
+2 \\ 3\\0\end{pmatrix}$
+
+$c) eigenvalue=6$
+
+$D=\begin{pmatrix}
+-5 & 2 & 3 &| 0\\
+0 & -2 & 5 &| 0\\
+0 & 0 & 0 &| 0\end{pmatrix}\\
+reduced\ rechelon \ form \ D= \begin{pmatrix}
+1 & 0 & -8/5 &| 0\\
+0 & 1 & -5/2 &| 0\\
+0 & 0 & 0 &| 0\end{pmatrix}$
+
+$x_1=8/5, x_2=5/2, x_3=1$
+
+$\begin{pmatrix}
+1 & 2 & 3\\
+0 & 4 & 5\\
+0 & 0 & 6\end{pmatrix} *
+\begin{pmatrix}
+8/5 \\5/2\\ 1\end{pmatrix}= \begin{pmatrix}
+9.6 \\15\\ 6\end{pmatrix}=6*
+\begin{pmatrix}
+8/5 \\ 5/2\\1\end{pmatrix}$
+
