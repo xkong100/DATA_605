@@ -1,0 +1,93 @@
+---
+title: "HW4 Assignment"
+author: "Vivian Kong"
+date: "2/24/2018"
+output:
+  pdf_document: default
+  html_document: default
+header-includes: \usepackage{amsmath}
+---
+
+---
+# Probelm set 1
+
+```{r}
+A <- matrix(c(1,2,3,-1,0,4),2, byrow = T)
+A
+# Find X=AA^T and Y= A^TA
+x <- A %*% t(A)
+x
+y <- t(A) %*% A
+y
+# Use the built in function to compute the eigenvalues and eigenvectors of X and Y
+eigen_x <- eigen(x)
+eigen_x
+eigen_y <- eigen(y)
+eigen_y
+```
+
+$$ A = U \ Sigma V^T $$
+$$ A^T A= V \ Signma^T \ Sigma V^T = Y$$
+$$ A A^T= U\Sigma \Sigma^T U^T =X$$
+```{r}
+# Compute the left-singular, singular values, and right-singular vectors 
+svd_A <- svd(A)
+svd_A
+# v is right-singular  u is left-singular
+```
+
+$$ Sigma $$
+```{r}
+ssvd <- matrix(c(svd(A)$d[1],0,0,svd(A)$d[2],0,0),nrow=2)
+
+ssu_eig <- matrix(c(sqrt(eigen(x)$values[1]),0,0,sqrt(eigen(x)$values[2]),0,0),nrow=2)
+
+ssv_eig <- matrix(c(sqrt(eigen(y)$values[1]),0,0,sqrt(eigen(y)$values[2]),0,0),nrow=2)
+```
+
+$$ Decomposition $$
+
+```{r}
+usvd <- svd_A$u
+vsvd <- cbind(svd_A$v, c(0,0,0))
+
+usvd %*% ssvd %*% t(vsvd)
+
+
+ueig <-eigen(x)$ vectors
+veig <- cbind(eigen(y)$vectors[,1:2], c(0,0,0))
+
+ueig %*% ssu_eig %*% t(veig)
+```
+
+
+# Problem Set 2
+```{r}
+myinverse <- function(M){
+  if (det(M)==0){
+    stop('Try another one!')
+  }
+  cofactor <- diag(ncol <-nrow(M))
+  for (i in 1:nrow(M)){
+    for(j in 1:nrow(M)){
+      cofactor[i,j] <- (-1)^(i+j)*det(M[-i,-j])
+    }
+  }
+  return( (t(cofactor)/ det(M)))
+}
+
+
+```
+```{r}
+A <- matrix(c(1,2,3,0,4,5,1,0,6), 3, byrow=T)
+A
+B <-myinverse(A)
+B
+
+```
+
+
+
+  
+  
+  
