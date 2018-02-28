@@ -1,0 +1,33 @@
+---
+title: "HW 5"
+author: "Vivian Kong"
+date: "2/27/2018"
+output: 
+  html_document: default
+header-includes: \usepackage{amsmath}
+---
+
+$$ a. \ Find\ the\  P (B+C< 1/2) $$
+
+$$ I\ find\ that\ when\ B+C < 1/2, C < 1/2 -B, I\ can\ draw\ the\ linear\ line\ inside\ the\ box\ of\ B\ and\ C\ where\ 0<=B<=1,\ and\ 0 <= C <= 1$$ 
+$The\ probability\ will\ be\ the\ area\ of\ the\ triangle\ with\ base\ is\ 1/2\ and\ height\ is\ 1/2.$
+
+$$P(B+C<\frac12)= (\frac12)*(\frac12)*(\frac12)=\frac18$$
+
+
+$$ b.\ P(BC < \frac 12)$$
+$$P(BC <\frac12)=(\frac12)*(1)+\int_{\frac12}^{1} \frac{1}{2B} dB=0.8466$$
+
+$$ c.\ P (|B-C|<\frac12)$$
+$$-\frac12<B-C<\frac12$$
+
+$$B-\frac12 < C < B+\frac12$$
+
+$$P(|B-C| < \frac12)=1-\frac12*\frac12*\frac12*2= 1-\frac14=\frac34$$
+
+$$ d.\ P(max{B,C} < \frac12)$$
+$$P(max{B,C}< \frac12)=P (B<\frac12\ and\ C<\frac12)=P(B<\frac12)*P(C<\frac12)=\frac12*\frac12=\frac14$$
+
+$$e. P(min{B,C}< \frac12)$$
+
+$$P(min{B,C}< \frac12)= 1-P (B>=\frac12\ and\ C>=\frac12)= 1- \frac12*\frac12=\frac34$$
