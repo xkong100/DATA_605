@@ -1,0 +1,112 @@
+---
+title: "XKong_Assignment6"
+author: "Vivian Kong"
+date: "3/5/2018"
+output: html_document
+header-includes: \usepackage{amsmath}
+---
+$$ #1. P(R or B) $$
+```{r}
+
+P_R <- 54/138
+P_B <- 75/138
+
+P_RorB <- P_R+P_B
+round(P_RorB,4)
+```
+
+$$ #2 P(R) $$
+```{r}
+
+
+
+total <- 19+20+24+17
+R <- 20
+P_R <- R / total
+round(P_R,4)
+```
+
+$$ 3. # P (No male or doesn't live with parents)$$
+```{r}
+
+P_no_male <- 728/1399
+P_doesnt_live <- 932/1399
+P_no_male_and_doesnt_live <- 476/1399
+
+P <- P_no_male+ P_doesnt_live- P_no_male_and_doesnt_live
+round(P,4)
+```
+
+$$ #4 They are dependent. $$
+$$ #5 $$
+```{r}
+
+choose(8,3)*choose(7,3)*choose(3,1)
+```
+
+$$ #6 They are independent $$
+
+$$ #7 14P8 = 121080960 $$
+
+$$ #8 $$
+```{r}
+
+round((choose(9,0)*choose(4,1)*choose(9,3))/(choose(22,4)),4)
+```
+
+$$ #9 $$
+```{r}
+
+factorial(11)/factorial(7)
+```
+
+$$ #10. 34% of subscribers are below age 34 $$
+
+
+$$ #11. $$
+```{r}
+ 
+n <- 4
+x <- 3
+p_3heads <- choose(4,3)*(0.5)^3 *(0.5)
+p_no3heads <- 1-p_3heads
+
+# step 1
+expect <- 97 * p_3heads + (-30)*p_no3heads
+expect
+
+# step 2
+
+win <- expect * 559
+win
+```
+
+
+$$ #12$$
+```{r}
+
+n <- 4
+x <- 3
+p_atmost4heads <- choose(9,4)*(0.5)^4 *(0.5)^5+choose(9,3)*(0.5)^3 *(0.5)^6+choose(9,2)*(0.5)^2 *(0.5)^7+choose(9,1)*(0.5)^1 *(0.5)^8 +choose(9,0)*(0.5)^0 *(0.5)^9
+p_no4heads <- 1-p_atmost4heads
+
+# step 1
+expect <- 23 * p_atmost4heads + (-26)*p_no4heads
+expect
+
+# step 2
+
+lose <- expect * 994
+lose
+```
+
+$$ 13. a)$$
+$$ P(L|D)=\frac {P(L\ and\ D)}{ P(D)}= \frac {P(D|L)*P(L)} {(P(D|L)*P(L)+P(D|L')*P(L')}$$
+$$ P(L|D)=\frac {0.59*0.2} {0.59*0.2+0.1*0.8}= \frac {.118}{.198}=0.596$$
+
+$$ 13. b) $$
+$$ P(L'|D')=\frac {P(L'\ and\ D')}{ P(D')}= \frac {P(D'|L')*P(L')} {(P(D'|L')*P(L')+P(D'|L)*P(L)}$$
+$$ P(L'|D)=\frac {0.9*0.8} {0.9*0.8+0.41*0.2}= \frac {.71}{.802}=0.898 $$
+
+$$ 13. c) $$
+$$ P(L\ or\ D)=P(L)+P(D)-P(L\ and\ D)=0.2+0.59-0.596=0.194 $$ 
