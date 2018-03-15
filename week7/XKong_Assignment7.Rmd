@@ -1,0 +1,68 @@
+---
+title: "XKong_Assignment7"
+author: "Vivian Kong"
+date: "3/9/2018"
+output: html_document
+header-includes: \usepackage{amsmath}
+---
+
+```
+1. x_1, x_2,...x_n are mutually independent, Y= min{x_1,x_2,...x_n}. Assume 1 <= j <= k and j is the minimum.
+```
+$$ Let\ x_i=j $$
+$$ If\ x_1,x_2,...x_k <= k$$
+$$ x_1*x_2*...x_n=k^n $$
+$$ If\ y=1\ is\ k^n-(k-1)^n$$
+```
+It means that all of the other numbers is not equal to 1
+```
+
+$$ If\ y=2,\\  k^n-(k-2)^n-(k^n-(k-1)^n)\\=k^n-(k-2)^n-k^n+(k-1)^n\\= (k-1)^n-(k-2)^n $$
+
+$$ Follow\ the\ same\ patterns,\ If\ y=j,\\ (k-j+1)^n-(k-j)^n $$
+$$P(Y=j=min{x_1,x_2,...x_n})= \frac {(k-j+1)^n-(k-j)^n}{k^n}$$
+
+
+```
+2. a) P(fail after 8 years) for Geometric distribution
+```
+$$ CDF F_x(k)=P(X<=k)=1-q^(k+1),\\ P(X>k)=1-p(X<=k)= q^(k+1)\\ so\ k=8,\ P(x>8)=0.9^9=0.3874$$
+$$E(x)=\frac{(1-p)}{p} = \frac {0.9}{0.1}= 9$$
+$$Sd(x)=sqrt(\frac{1-p}{p^2})=9.49 $$
+
+```{r}
+p <- 1/10
+pgeom(8, prob=p, lower.tail=FALSE)
+# The expected value for the geometric distribution
+E <- (1-p)/p
+E
+# The standard deviation for the geometric distribution
+sd <- sqrt((1-p)/p^2)
+sd
+```
+
+```
+b) P(fail after 8 years) for exponential distribution
+```
+$$ CDF F_x(k)=P(X<=k)=1-e^(-\lambda k)\\ P(X>k)=1-P(x<=k)=1-(1-e^-\lambda k)= e^-\lambda k.\\k=8, P(X>8)=e^ (-.8)=0.4493\\E(x)=1/\lambda=1/0.1=10\\Sd(x)=1/\lambda=1/0.1=10$$
+
+
+```{r}
+pexp(8,0.1, lower.tail=FALSE)
+```
+
+```
+c) P(fail after 8 years) for binomial distribution.
+```
+
+$$ For\ binomial\ distribution\, P(X=k)= {n\choose k} * p^k*(1-p)^(n-k)\\ for\ k=0\ and\ n=8\\P(x=0)={8\choose 0}*(0.1)^0(0.9)^8=0.4305 \\E(x)=n*p=0.8\\ Sd(x)=sqrt(np(1-p))=sqrt(8(0.1)(0.9))=.8485$$
+```{r}
+pbinom(0,8,0.1,lower.tail=TRUE)
+```
+```
+d) P(fail after 8 years) by poisson
+```
+$$ P(x=k)= \frac {\lambda^k}{k!}*e^(-\lambda)= \frac {0.8^0} {0!}*e^(-0.8)=0.4493\\ E(x)=0.8\\ Sd(x)=sqrt(0.8)=0.8944$$
+```{r}
+ppois(0,0.8,lower.tail=TRUE)
+```
