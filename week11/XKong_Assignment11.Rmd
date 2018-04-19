@@ -1,0 +1,45 @@
+---
+title: "Week11"
+author: "Vivian Kong"
+date: "4/18/2018"
+output: html_document
+---
+
+```{r}
+library(ggplot2)
+data(cars)
+head(cars)
+summary(cars)
+```
+
+# Visualize the data
+
+```{r}
+carslm <- lm(cars$dist ~ cars$speed)
+carslm
+plot(cars$speed,cars$dist, main ="speed vs. stopping distance", xlab="speed", ylab="stopping distance")
+abline(carslm)
+```
+
+# Quality Evaluation
+
+```{r}
+summary(carslm)
+```
+
+##According to the textbook, we know that if the line is a good fit with the data, the median value of residual is near zero, min and max values of roughly the same magnitude. For this model, the median is -2.272 which is preety close to 0, min and max is similar magnitude. Also, for a good linear model, standard error for each coefficients that is at least 5 to 10 times smaller than the corresponding coefficent. For the standard error for speed is (3.9324/0.4155=9.4642) This ratio fits the category we are talking about. For the p-value of the coefficient is 1.49e-12, a tiny value - the probability is not relevant in this model. It indicates the model fits pretty well. 
+
+# Residual Analysis
+
+```{r}
+plot(fitted(carslm),resid(carslm))
+```
+
+##In this plot, we see the residuals roughly cluster around 0 which indicates the model is relatively good fit. 
+
+```{r}
+qqnorm(resid(carslm))
+qqline(resid(carslm))
+```
+
+##We know that if the residuals were normally distributed, we would expect the points follow a straight line. In our model, we can see that most points follow the straight line. It also indicates that the linear model is reliable.
