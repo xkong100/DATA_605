@@ -1,0 +1,40 @@
+---
+title: "week11_discussion"
+author: "Vivian Kong"
+date: "4/18/2018"
+output: html_document
+---
+# I am interested in if there is a correlation between the percentage of urban population and the number of Assults. 
+
+```{r}
+data(USArrests)
+head(USArrests)
+summary(USArrests)
+```
+
+# Visualize the data
+
+```{r}
+arrestslm <- lm(USArrests$Assault ~ USArrests$UrbanPop)
+arrestslm
+plot(USArrests$UrbanPop,USArrests$Assault, main ="Assault vs. urban population percentage", xlab="Assault", ylab="Urban Population percentage")
+abline(arrestslm)
+```
+
+# Quality Evaluation and Residual analysis
+
+```{r}
+summary(arrestslm)
+```
+
+##According to the textbook, we know that if the line is a good fit with the data, the median value of residual is near zero, min and max values of roughly the same magnitude. For this model, the median is -18.68 which is not quite close to 0, min and max is similar magnitude. It maybe a bad sign about the quality of this linear model. 
+
+```{r}
+plot(fitted(arrestslm),resid(arrestslm))
+qqnorm(resid(arrestslm))
+qqline(resid(arrestslm))
+```
+
+##In this plot, we see the residuals tend to increase as we move to left and right. They are not uniformly scattered above and below zero. It tells us that the urban population maybe not the sole predictor in this model to predict the number of assults.
+
+##For another test (Q-Q plot), a good linear model to be normally distributed around a mean of zero. However, the points do not follow the straight line. This behavior indicates that the residuals are not normally distributed. It is also another proof to prove that urban population maybe not correlated to the number of assults strongly.
