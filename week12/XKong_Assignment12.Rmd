@@ -1,0 +1,109 @@
+---
+title: "Week12"
+author: "Vivian Kong"
+date: "4/24/2018"
+output: html_document
+---
+> Question 1
+
+```{r}
+who <- read.csv("https://raw.githubusercontent.com/xkong100/DATA_605/master/week12/who.csv")
+head(who)
+summary(who)
+who.lm <- lm(who$LifeExp~who$TotExp)
+who.lm
+plot(who$TotExp,who$LifeExp, main="Life Expectancy vs. Total expenditure", xlab="TotExp", ylab="LifeExp")
+abline(who.lm)
+summary(who.lm)
+```
+
+* F statistics is not particularly useful here since F statistics compares to a model has one fewer parameter since our model is single-variable linear model, F statistics can't say a lot about our linear model.  
+* For  R^2, we have 2 values, multiple R-squared is 0.2577 and adjusted R-square is 0.2537. Since the adjusted R-square modified to take into account the number of predictors well in the model, we only have 1 predictor in this linear model, it does not help use too much for this model as well. For the multiple R-square is 0.2577 which means that this linear model explains 25.77% of the data's variation. This number is relatively low and we need to improve our model.  
+* For standard error, good model needs the standard error at least 5-10 times less than the corresponding coefficient. 
+  + In our case, it is the total expenditure. the coefficient is 6.297e^-5 and standard error of the coefficient is 7.795e^-6, the standard error is about 8 times less than the coefficient of total expenditure. It is a good sign to indicate it is a reasonable linear model because the larger ratio is relatively little bariablity in the slope estimate. 
+  + For intercept standard error, it is about 85 times less than the coefficient of the intercept. which is also a pretty good sign for our model. 
+  + For residual standard deviation, it is a measure of the total variation in the residual values. For our residual graph, is not quite line up to 0, it means that the linear model needs to be improved.
+* P-value, 7.714e-14. p-value measures the probablity of corresponding coefficient is not relevant in the model. when p-value is small enough such as p-value < 0.05, which indicates that the linear model we have is a good model. In our case, p-value is significantly small. 
+
+In conclusion, Our model between total expenditure and Life expectance for the country should be correlated but we may need to throw more variables into our model to make it better.
+
+```{r}
+plot(fitted(who.lm), resid(who.lm))
+qqnorm(resid(who.lm))
+qqline(resid(who.lm))
+```
+
+> Question 2
+
+```{r}
+nLifeExp <- who$LifeExp^4.6
+head(nLifeExp)
+nTotExp <- who$TotExp^0.06
+head(nTotExp)
+nwho.lm <- lm(nLifeExp~nTotExp)
+nwho.lm
+plot(nTotExp,nLifeExp, main="New Life Expectancy vs. Total expenditure", xlab="N.TotExp", ylab="N.LifeExp")
+abline(nwho.lm)
+summary(nwho.lm)
+```
+* For F statistics, same conclusion from the question 1. since our model is single-variable linear model, F statistics can't say a lot about our linear model.  
+* For  R^2, we have 2 values, multiple R-squared is 0.7298 and adjusted R-square is 0.7283. For the multiple R-square is 0.7298 which means that this linear model explains 72.98% of the data's variation. This number is getting much better compare to the R-square from question 1. 
+* For standard error, good model needs the standard error at least 5-10 times less than the corresponding coefficient. 
+  + In our case, it is the total expenditure. the coefficient is 620060216 and standard error of the coefficient is 27518940, the standard error is about 22 times less than the coefficient of total expenditure. It becomes way better by comparing to question 1. It is a good sign to indicate it is a reasonable linear model because the larger ratio is relatively little bariablity in the slope estimate. 
+  + For intercept standard error, it is about 15 times less than the coefficient of the intercept. It is still a accepable standard error although it is less than the Question 1. The main reason behind it is because we did TotExp^4.6 and LifeExp^0.06. The pairs are become really different. 
+  + For residual standard deviation, it is a measure of the total variation in the residual values. For our residual graph,the residuals line up to the line which means our model is getting better.
+
+* P-value, 2.2e-16. p-value measures the probablity of corresponding coefficient is not relevant in the model. when p-value is small enough such as p-value < 0.05, which indicates that the linear model we have is a good model. In our case, p-value is significantly small. 
+
+In conclusion, the new model between total expenditure and Life expectance for the country is getting more correlated and it becomes a better model.
+```{r}
+plot(fitted(nwho.lm), resid(nwho.lm))
+qqnorm(resid(nwho.lm))
+qqline(resid(nwho.lm))
+```
+
+> Question 3
+
+```{r}
+nwho.lm
+f1 <- 620060216*1.5-736527909
+f1^(1/4.6)
+
+f2 <- 620060216*2.5-736527909
+f2^(1/4.6)
+```
+* When the TotExp^0.06 =1.5, the life expectancy is predicted to be 63.3 years.
+* When the TotExp^0.06 =2.5, the life expectancy is predicted to be 86.5 years.
+
+> Question 4
+
+```{r}
+LifeExp.lm <-lm(who$LifeExp~who$PropMD+who$TotExp+(who$PropMD*who$TotExp))
+LifeExp.lm
+summary(LifeExp.lm)
+```
+
+* F statistics is 34.49 in this case and degree freedom is 186. Larger F statistics indicates that a linear model is more compatible with the data than a constant average model. High F values leading to small p values so they are sufficient for predicting the Life Expectancy.
+* R^2. The Multiple R-square is 0.3574 and it means that this multi-regression model explains 35.74% of data value. The percentage here is kind of low which suggest that we may be able to add more predictors or get rid of some predictors to improve the value. The adjusted R-squared is 0.3471. The adjusted R-square modified to take into account the number of predictors well in the model. In our case, it also suggested that we need to improve our model.
+
+* standard error. All of the standard error of PropMD, TotExp, PropMD*TotExp, and Intercept is at least 5 times less than the coefficient. It indicates that our model makes sense. For residual standard error is 8.765. Accoring to our residual graph, The residuals are off the line which means that the model still needs improvements.
+
+* P-value, P value for all of the prefictors and intercept are significantly small, and for our F-test, p-value is even less than 2.2e-16. They all indicates that our model makes sense. 
+
+In conclusion, our multi-regression model is a fair model. It shows the correlation between different varaibles and LifeExp but it sill needs to be improved.
+
+```{r}
+plot(fitted(LifeExp.lm), resid(LifeExp.lm))
+qqnorm(resid(LifeExp.lm))
+qqline(resid(LifeExp.lm))
+```
+
+> Question 5
+
+```{r}
+f3 <- 62.77+1497*(.03)+.00007233*(14)-.00602*(.03*14)
+f3
+```
+
+When the proportion of MD in the population is 3% and Total expenditure of personal and government expenditure is 14, and 3% of this sum of the expenditure gives to MD, the life expectancy is 107 years. I will think the number here is not quite realistics. By analyzing our model, it is a fair but not quite reliable models. I think that the life expectancy should be accounted to other factors such as the proportion of infant survival. The model should include more variables.
+              
