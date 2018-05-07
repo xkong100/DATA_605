@@ -1,0 +1,40 @@
+---
+title: "Week 14"
+author: "Vivian Kong"
+date: "5/1/2018"
+output: html_document
+---
+
+Taylor series
+I will find all of the Taylor series for the following practice around x=0  
+1.$$ f(x)= \frac {1}{(1-x)} $$
+
+$$  f(x)=\frac {1}{(1-x)}, f(0)=1$$
+$$ f'(x)=(1-x)^{-2}, f(0)=1$$
+$$ f''(x)=2(1-x)^{-3}, f(0)=2$$
+$$ f'''(x)=6(1-x)^{-4}, f(0)=6$$
+$$ f''''(x)=24(1-x)^{-5}, f(0)=24$$
+Follow the patterns here, we find the Taylor Series for $$ f(x)=\frac {1}{1-x}= 1+x+ \frac{2x^2} {2!}+ \frac {6x^3} {3!}+ \frac{24x^4}{4!}+...$$
+
+$$ f(x)= 1+x+x^2+x^3+x^4+...=\sum_{n=0}^{\infty} x^n $$
+
+2. $$ f(x)= e^x $$
+
+$$ f(x)=e^x, f(0)=1$$
+$$ f'(x)=e^x, f'(0)=1$$
+$$ f''(x)=e^x, f''(0)=1$$
+$$ f'''(x)=e^x, f'''(0)=1$$
+Follow the patterns, we find the Taylor series for $$ f(x)=e^x= 1+x+ \frac{x^2}{2!}+ \frac{x^3}{3!}+ \frac{x^4}{4!}+...= \sum_{n=0}^{\infty} \frac {x^n}{n!} $$
+
+3. $$ f(x)=ln(1+x) $$
+$$f(x)=ln(1+x), f(0)=0$$
+$$ f'(x)=\frac {1}{1+x}, f'(0)=1$$
+$$f''(x)=\frac {-1}{(1+x)^2}, f''(0)=-1$$
+$$ f'''(x)=\frac {2}{(1+x)^3}, f'''(0)=2$$
+$$ f''''(x)=\frac {-6}{(1+x)^4}, f''''(0)=-6$$
+
+Follow the patterns, we find the Taylor series for $$f(x)= ln(1+x)= x- \frac {x^2} {2!}+ \frac {2x^3} {3!}- \frac {6x^4} {4!}=x- \frac{x^2}{2}+ \frac{x^3}{3}- \frac{x^4}{4}+...= \sum_{n=1}^{\infty} (-1)^{n+1}  \frac{x^n}{n}$$
+
+
+
+
