@@ -1,0 +1,55 @@
+---
+title: "Week 15"
+author: "Vivian Kong"
+date: "5/14/2018"
+output: html_document
+---
+
+1.The distance formula is: $D= \sum_{i=1}^{n}(y_i-(ax_i+b))^2$ 
+
+To find the least square regression line. We need to take the first partial derivative to solve for a and b. $\frac{dD}{da}=\sum_{i=1}^{n}(2(y_i-ax_i-b)(-x_i)=0$  $\frac{dD}{db}=\sum_{i=1}^{n}2(y_i-ax_i-b)(-1)=0$  
+ 
+Equation 1: $a\sum_{i=1}^{n}(x_i)^2+b\sum_{i=1}^{n} x_i=\sum_{i=1}^{n}x_iy_i$ 
+
+Equation 2: $a\sum_{i=1}^{n}(x_i)+nb=\sum_{i=1}^{n}y_i$
+
+Plug in the points, we get equation 1: $249.9a+35b=545.86$  equation 2:$35a+5b=75$
+
+```{r}
+library("pracma")
+A <- matrix(c(249.9, 35, 545.86, 35, 5, 75),2,3,byrow=TRUE)
+rref(A)
+```
+So, $y=4.26x-14.8$
+
+2.Find local max/min or saddle, we need to take partial derivative $\frac {df}{dx}=24-6y^2=0, y^2=4, y=-2, 2$  
+$\frac{df}{dy}=-12xy-24y^2=0, -12y(x+2y)=0, y=0 (rejected), x=-2y$  
+$\frac{d^2f}{dx^2}=0,\frac{d^2f}{dy^2}=-12x-48y, \frac{d^2f}{dxy}=-12y$  
+$D(x,y)=f_{xx}f_{yy}-f^2_{xy}=-(-12y)^2=-144y^2. D(x,y)<0$ for all (x,y), so by the Second Derivative Test, any critical point is a saddle point. 
+$(-4,2,-64)$ and $(4,-2,64)$ are saddle points. 
+
+3. Step 1 $R(x,y)=x(81-21x+17y)+y(40+11x-23y)$  
+Step 2. Evaluate
+```{r}
+eval( 2.30*(81-21*2.30+17*4.1)+4.1*(40+11*2.3-23*4.1))
+```
+  The revenue is $116.62.
+
+4. $x+y=96, y=96-x$  
+$C= \frac{1}{6}x^2+\frac{1}{6}(96-x)^2+7x+25(96-x)+700$  
+$C_x=\frac{1}{3}x-\frac{1}{3}(96-x)+7-25=\frac{2}{3}x-50=0, x=75$
+Since $C_{xx}=\frac{2}{3}>0$ relative minima, so $x=75, y=21$ LA produces 75, Denver produces 21.
+
+5.  
+
+$\int_{2}^{4}\int_{2}^{4} e^{8x+3y}dxdy$ 
+
+$=\int_{2}^{4}\int_{2}^{4}e^{8x}e^{3y}dxdy$ 
+
+$=\int_{2}^{4} \frac{1}{8}e^{3y} e^{8x} |_2^4dy$ 
+
+$=\frac{1}{8}(e^{32}-e^{16})\int_2^4 e^{3y}dy$ 
+
+$=\frac{1}{8}(e^{32}-e^{16}) \frac{1}{3}e^{3y}|_2^4$ 
+
+$=\frac{1}{24}(e^{32}-e^{16})(e^{12}-e^{6})$
