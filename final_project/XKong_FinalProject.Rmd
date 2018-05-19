@@ -1,0 +1,305 @@
+---
+title: "Final Project"
+author: "Vivian Kong"
+date: "5/17/2018"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r}
+library("e1071")
+library("ggplot2")
+library("hexbin")
+library("RColorBrewer")
+library("psych")
+houseprice <- read.csv("https://raw.githubusercontent.com/xkong100/DATA_605/master/final_project/train.csv", stringsAsFactors = FALSE, check.names = FALSE, na.strings = c("", "NA"))
+skewness(houseprice$LotArea)
+```
+positive skewness means the distribution for Lot Area is skewed right. It is necessary because when we run the Chi-Square Test, it requires that the distribution of the data has to be skewed right. 
+
+```{r}
+X <- houseprice$LotArea
+Y <- houseprice$SalePrice
+summary (X)
+summary(Y)
+```
+
+## Probability
+
+Calculate as a minimum the below probabilities a through c. Assume the small letter "x" is estimated as the 1st quartile of the X variable, and the small letter "y" is estimated as the 1st quartile of the Y variable. Interpret the meaning of all probabilities. In addition, make a table of counts as shown below.
+
+```{r}
+x <- 7554
+y <- 130000
+
+# P(X>x)
+P_X_g_x <- sum(X>x)/nrow(houseprice)
+#P(Y>y)
+P_Y_g_y <- sum(Y>y)/nrow(houseprice)
+#P(X<x)
+P_X_l_x <- sum(X<x)/nrow(houseprice)
+
+# P(X>x & Y>y)
+
+P_x_y_g_intersection <- sum (X>x & Y>y)/nrow(houseprice)
+
+
+# P(X<x & Y>y)
+P_x_y_l_intersection <- sum(X<x & Y>y)/nrow(houseprice)
+
+```
+
+a. $P(X>x|Y>y)=\frac {P(X>x, Y>y)}{P(Y>y)}=0.82$
+```{r}
+a_P <- P_x_y_g_intersection/P_Y_g_y
+round(a_P,2)
+```
+
+b. $P(X>x,Y>y)=0.61$
+```{r}
+b_P <- P_x_y_g_intersection
+round(b_P,2)
+```
+
+c. $P(X<x| Y>y)=\frac{P(X<x, Y>y)}{P(Y>y)}=0.18$
+```{r}
+c_P <-P_x_y_l_intersection/P_Y_g_y
+round (c_P, 2)
+```
+
+# Table of counts
+
+```{r}
+r1c1 <- sum(X<=x & Y<=y)
+r1c1
+
+r1c2 <- sum(X<=x & Y>y)
+r1c2
+
+r1c3 <- r1c1 + r1c2
+r1c3
+
+r2c1 <- sum(X>x & Y<=y)
+r2c1
+
+r2c2 <- sum(X>x & Y>y)
+r2c2
+
+r2c3 <- r2c1 +r2c2
+r2c3
+
+r3c1 <- r1c1+r2c1
+r3c1
+
+r3c2 <- r1c2+r2c2
+r3c2
+
+r3c3 <- r1c3 +r2c3
+r3c3
+
+```
+
+```{r}
+ctable<- matrix(c(174,191,365,202,893,1095,376,1084,1460),ncol=3,byrow=TRUE)
+colnames(ctable) <- c("Y<=Q1","Y>Q1","total")
+rownames(ctable) <- c("X<=Q1","X>Q1","total")
+ctable <- as.table(ctable)
+ctable
+
+```
+# Independence
+$A=X>x$, $B=Y>y$. If A and B are independent, $P(AB)=P(A)P(B)$
+```{r}
+P_AB <-P_x_y_g_intersection
+P_AB
+
+P_A <-P_X_g_x
+P_A
+
+P_B <- P_Y_g_y
+P_B
+
+P <- P_A * P_B
+P
+```
+
+Since $P(AB)=0.62$, and $P(A)\cdot P(B)=0.56$. They are close but they are not the same which means that they are not independent. We also will use Chi-Square test to test our mathematical outcome. 
+
+```{r}
+summary(ctable)
+```
+
+For Chi-Square Test, our $H_0$ is X and Y are independent. $H_A$ is X and Y are dependent. By the test, we get $P_{value}=1.75*10^{-25}$ It is statistical significant. The Chi-Square test also indicates that They are associated.
+
+## Descriptive and Inferential Statistics.
+
+# Univariate descriptive statistics for X and Y
+
+```{r}
+describe(X)
+describe(Y)
+```
+
+# ScatterPlot
+
+```{r}
+plot(X,Y,main="Scatterplot for Lot Size and sale price", xlab="Lot Size", ylab="sale price" )
+```
+
+Since the scatter plot is high density which is not useful. I adjusted it.
+
+```{r}
+L <- rnorm(20000)
+S <- rnorm(20000)
+bin <- hexbin(L, S,xbins=50)
+colors <-colorRampPalette(rev(brewer.pal(11,'Spectral')))
+plot(bin, main="Scatterplot for Lot Size and sale price",colramp=colors,legend=F, xlab="Lot Size", ylab="sale price")
+```
+
+Correlation matrix 
+My 3 quantitative variables are TotRmsAbvGrd:Total rooms above grade, Garage Area, and OverallQua: Overall Quality
+```{r}
+mydata <- houseprice[,c(63,18,55)]
+head(mydata)
+res <- cor(mydata)
+round(res,2)
+```
+```{r}
+par(mfrow=c(2,2))
+plot(houseprice$OverallQual,houseprice$GarageArea)
+plot(houseprice$TotRmsAbvGrd,houseprice$OverallQual )
+plot(houseprice$TotRmsAbvGrd,houseprice$GarageArea)
+```
+
+# Correlation Test
+
+```{r}
+rt1 <- cor.test(houseprice$TotRmsAbvGrd,houseprice$GarageArea,method="pearson",conf.level=0.92)
+rt1
+
+rt2 <- cor.test(houseprice$OverallQual,houseprice$TotRmsAbvGrd,method="pearson",conf.level=0.92)
+rt2
+
+rt3 <- cor.test(houseprice$OverallQual,houseprice$GarageArea,method="pearson",conf.level=0.92)
+rt3
+```
+
+From the result, we can tell that for all 3 cases, there exist correlations between overall quality and Total rooms above the ground, garage area and Total Rooms above the ground, and overall quality and garage area. Since all of the p-values are extremely small and proved that the correlations between them are statistically significant. For each 92% confidence interval, it means that 
+1) We have 92% confidence to conclude that the true population correlation will be between 0.30 and 0.38 for total rooms above the ground and garage area. 
+2) We have 92% confidence to conclude that the true population correlation will be between 0.39 and 0.46 for overall quality and Total rooms above the ground.
+3) We have 92% confidence to conclude that the true population correlation will be between 0.53 and 0.59 for overall quality and Garage area.
+
+Familywise error, AKA Type I error. It means that incorrectly reject $H_0$. In our case, there is no correlation but we reject it incorrectly. When we have lots of data, our case has 1480 sets of data, it means that we will do a lot of hypothesis testing. Hiher number of data sets can give us more accurate data result but it may also bring the error. 
+
+# Linear Algebra and Correlation
+```{r}
+#invert the correlation for precision
+p <- solve (res)
+p
+
+#precision * correlation
+p %*% res
+
+# correlation * precision
+
+res %*% p
+
+```
+
+
+# Calculus-Based Probability & Statistics
+```{r}
+library("MASS")
+min(X)
+```
+
+Derive the exponential distribution: 
+```{r}
+fit <- fitdistr(X,"exponential")
+lambda <-fit$estimate
+lambda
+```
+
+Create the sample of 1000
+```{r}
+sample <- rexp(1000,lambda)
+hist(sample,main="Histogram of simulated data", xlab="Lot Area",border="blue", col="green",breaks=50)
+
+hist(X,main="Histogram of observed data", xlab="Lot Area",border="blue", col="red",breaks=200)
+```
+
+Using the exponential pdf, find the 5th and 95th percentiles using the cumulative distribution function (CDF)
+
+```{r}
+# simulated 5th percentile
+qexp(.05,rate=lambda)
+# observed 5th percentile
+obs.p5 <- quantile(X, 0.05)
+obs.p5
+# simulated 95th percentile
+qexp(.95,rate=lambda)
+# observed 95th percentile
+obs.p95<-quantile(X,0.95)
+obs.p95
+```
+
+Calculated a 95% confidence interval from the empirical data.
+```{r}
+library("Rmisc")
+CI(X, 0.95)
+```
+We have 95% confidence, the true population mean of Lot size is between 10004.42 sq feet and 11029.24 sq feet. In my opinion, the exponential distribution would not be a good fit in this case since the center of the exponential distribution is shifted left and it becomes a extreme skewed right case comparing to the empirical data. 
+
+# Modeling 
+
+Multiple Linear Regression 
+
+```{r}
+fit <- lm(Y ~ houseprice$OverallQual + houseprice$LotArea + houseprice$TotRmsAbvGrd+houseprice$GarageArea)
+summary(fit)
+```
+
+The multiple regression is: $SalePrice=33130\cdot OverallQual+1.021\cdot LotArea+9353\cdot TotRmsAbvGrd+78.58\cdot GarageArea-130000$
+Plot
+```{r}
+par(mfrow=c(2,2))
+X1<-houseprice$OverallQual
+X2<-houseprice$LotArea
+X3<-houseprice$TotRmsAbvGrd
+X4<-houseprice$GarageArea
+
+
+plot(X1,Y, col="blue", main="OverallQual", ylab="Sale Price")
+abline(lm(Y~X1), col="yellow", lwd=3) # regression line (y~x)
+
+plot(X2,Y, col="red", main="LotArea", ylab="Sale Price")
+abline(lm(Y~X2), col="yellow", lwd=3) # regression line (y~x)
+
+plot(X3,Y, col="green", main="TotRmsAbvGrd", ylab="Sale Price")
+abline(lm(Y~X3), col="yellow", lwd=3) # regression line (y~x)
+
+plot(X4,Y, col="black", main="GarageArea", ylab="Sale Price")
+abline(lm(Y~X4), col="yellow", lwd=3) # regression line (y~x)
+```
+
+Load test data set and create calculated column
+```{r}
+test <- read.csv("https://raw.githubusercontent.com/xkong100/DATA_605/master/final_project/test.csv", stringsAsFactors = FALSE, check.names = FALSE, na.strings = c("", "NA"))
+
+SalePrice <- ((33130*houseprice$OverallQual)+(1.021*houseprice$LotArea)+(9353*houseprice$TotRmsAbvGrd)+(78.58*houseprice$GarageArea)-130000)
+test <-test[,c("Id","OverallQual","LotArea","TotRmsAbvGrd", "GarageArea")]
+head(test)
+```
+```{r}
+submission <-cbind(test$Id, SalePrice)
+colnames(submission)[1] <- "Id"
+submission[submission<0] <- median(SalePrice) #clear negatives due to missing values
+submission<-as.data.frame(submission[1:1459,])
+head(submission)
+str(submission)
+dim(submission)
+write.csv(submission,file="submission.csv",quote=FALSE, row.names = FALSE)
+```
+
+On my Kaggle.com, my submission score is 0.5959.(username is xkong100). 
